@@ -1,28 +1,23 @@
 import { atom, selector } from "recoil";
+import { faker } from '@faker-js/faker';
 import { Product } from "../types/product";
 
+const generateFakeProduct = (): Product => {
+    const fakeProduct: Product = {
+        id: faker.datatype.uuid(),
+        name: faker.animal.cat(),
+        price: parseFloat(faker.commerce.price()),
+        quantity: faker.datatype.number(100),
+        image: faker.image.cats(600, 600, true)
+    };
+
+    return fakeProduct;
+}
+
 const init: Product[] = [
-    {
-        id: 1,
-        name: 'Product1 abc',
-        price: 19.99,
-        quantity: 3,
-        image: 'product1.jpeg'
-    },
-    {
-        id: 2,
-        name: 'Product2 camera',
-        price: 9.99,
-        quantity: 10,
-        image: 'product2.jpeg'
-    },
-    {
-        id: 3,
-        name: 'Product3 expensive',
-        price: 99.99,
-        quantity: 10,
-        image: 'product3.jpeg'
-    },
+    generateFakeProduct(),
+    generateFakeProduct(),
+    generateFakeProduct(),
 ] 
 
 export const productsState = atom<Product[]>({

@@ -77,7 +77,7 @@ export const Checkout = () => {
                                 {user.cart.map((product, index) => (
                                     <div className="flex" key={index}>
                                         <div className="flex gap-2">
-                                            <img src={`/images/${product.image}`} alt="cart1" className="object-cover w-14 h-14" />
+                                            <img src={product.image} alt="cart1" className="object-cover w-14 h-14" />
                                             <div className="flex flex-col justify-between gap-2">
                                                 <h1 className="text-lg font-semibold truncate max-w-[140px]">{product.name}</h1>
                                                 <div className="flex gap-3 text-sm">

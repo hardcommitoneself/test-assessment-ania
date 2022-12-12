@@ -5,6 +5,7 @@ import { filteredProductsState, productFilterState, productsState } from "../sta
 import { userState, cartState } from "../state/user.atom";
 import { IoCartOutline } from "react-icons/io5";
 import { AiFillDelete } from "react-icons/ai";
+import { faker } from '@faker-js/faker';
 import { Product } from "../types/product";
 
 export const Home = () => {
@@ -28,7 +29,7 @@ export const Home = () => {
         setFilter(e.target.value);    
     }
 
-    const handleAddToCart = (product_id: number) => {
+    const handleAddToCart = (product_id: string) => {
         const product = allProducts.find((product) => product.id === product_id);
         if(product && product.quantity > 0) {
             const index = allProducts.findIndex((product) => product.id === product_id);
@@ -81,7 +82,7 @@ export const Home = () => {
         navigate('/checkout');
     }
 
-    const handleRemoveFromCart = (product_id: number) => {
+    const handleRemoveFromCart = (product_id: string) => {
         const cartProduct = user.cart.find((product) => product.id === product_id);
         const product = allProducts.find((product) => product.id === product_id);
 
@@ -110,6 +111,22 @@ export const Home = () => {
         } else {
             alert('something went wrong!');
         }
+    }
+
+    const handleAddFakeProduct = () => {
+        const fakeProduct: Product = {
+            id: faker.datatype.uuid(),
+            name: faker.animal.cat(),
+            price: parseFloat(faker.commerce.price()),
+            quantity: faker.datatype.number(100),
+            image: faker.image.cats(600, 600, true)
+        };
+
+        // add new product
+        setAllProducts([
+            ...allProducts,
+            fakeProduct
+        ]);
     }
 
     return (
@@ -148,7 +165,7 @@ export const Home = () => {
                                 {user.cart.map((product, index) => (
                                     <div className="flex justify-between" key={index}>
                                         <div className="flex gap-2">
-                                            <img src={`/images/${product.image}`} alt="cart1" className="object-cover w-14 h-14" />
+                                            <img src={product.image} alt="cart1" className="object-cover w-14 h-14" />
                                             <div className="flex flex-col justify-between gap-2">
                                                 <h1 className="text-lg font-semibold truncate max-w-[140px]">{product.name}</h1>
                                                 <div className="flex gap-3 text-sm">
@@ -194,7 +211,12 @@ export const Home = () => {
             {/* products */}
             <div className="flex flex-col items-center gap-5 px-5 py-5 lg:px-20 lg:py-10">
                 {/* title */}
-                <h1 className="text-3xl font-medium">Browse the Catalogue</h1>
+                <div className="flex items-end justify-between w-full">
+                    <h1 className="text-3xl font-medium">Browse the Catalogue</h1>
+                    <button onClick={handleAddFakeProduct} className="px-6 py-2.5 w-fit bg-sky-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-sky-700 hover:shadow-lg focus:bg-sky-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-sky-800 active:shadow-lg transition duration-150 ease-in-out flex items-center">
+                        Add fake product
+                    </button>
+                </div>
 
                 {/* input */}
                 <div className="relative flex items-stretch w-full gap-2 input-group">
@@ -206,7 +228,7 @@ export const Home = () => {
                     {filteredProducts.map((product, index) => (
                         <div className="flex flex-col gap-5" key={index}>
                             {/* item image */}
-                            <img src={`/images/${product.image}`} className="h-[150px] object-cover" alt={product.name} />
+                            <img src={product.image} className="h-[150px] object-cover" alt={product.name} />
 
                             {/* item info */}
                             <div className="flex flex-col gap-2">
