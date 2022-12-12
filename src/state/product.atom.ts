@@ -43,4 +43,4 @@ export const filteredProductsState = selector({
 
         return products.filter((product) => product.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0);
     }
-})
+});

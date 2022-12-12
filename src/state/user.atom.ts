@@ -9,7 +9,20 @@ const init: User = {
     cart: []
 }
 
-export const userState = atom({
+export const userState = atom<User>({
     key: 'user',
     default: init
+});
+
+export const cartState = selector({
+    key: 'cartState',
+    get: ({ get }) => {
+        const user = get(userState);
+
+        const total = user.cart.reduce((a, c) => a + c.price * c.quantity, 0);
+
+        return {
+            total
+        }
+    }
 })
