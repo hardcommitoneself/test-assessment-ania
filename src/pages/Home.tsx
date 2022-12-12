@@ -75,6 +75,37 @@ export const Home = () => {
         }
     }
 
+    const handleRemoveFromCart = (product_id: number) => {
+        const cartProduct = user.cart.find((product) => product.id === product_id);
+        const product = allProducts.find((product) => product.id === product_id);
+
+        if(cartProduct && product) {
+            const cartIndex = user.cart.findIndex((product) => product.id === product_id);
+            const productIndex = allProducts.findIndex((product) => product.id === product_id); 
+
+            // remove the product from cart
+            setUser({
+                ...user,
+                cart: [
+                    ...user.cart.slice(0, cartIndex),
+                    ...user.cart.slice(cartIndex + 1)
+                ]
+            });
+
+            // add items to product list again
+            setAllProducts([
+                ...allProducts.slice(0, productIndex),
+                {
+                    ...product,
+                    quantity: product.quantity + cartProduct.quantity
+                },
+                ...allProducts.slice(productIndex + 1)
+            ]);
+        } else {
+            alert('something went wrong!');
+        }
+    }
+
     return (
         <div className="container relative h-screen min-w-full overflow-x-hidden">
             {/* top banner */}
@@ -123,7 +154,7 @@ export const Home = () => {
 
                                         {/* delete button */}
                                         <div className="flex items-center">
-                                            <button className="flex items-center px-2 py-2 text-xs font-medium leading-tight text-white uppercase transition duration-150 ease-in-out rounded shadow-md bg-sky-600 hover:bg-sky-700 hover:shadow-lg focus:bg-sky-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-sky-800 active:shadow-lg">
+                                            <button onClick={() => handleRemoveFromCart(product.id)} className="flex items-center px-2 py-2 text-xs font-medium leading-tight text-white uppercase transition duration-150 ease-in-out rounded shadow-md bg-sky-600 hover:bg-sky-700 hover:shadow-lg focus:bg-sky-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-sky-800 active:shadow-lg">
                                                 <AiFillDelete size={15} />
                                             </button>
                                         </div>
