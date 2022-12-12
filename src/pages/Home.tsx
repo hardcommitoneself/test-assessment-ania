@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { filteredProductsState, productFilterState } from "../state/product.atom";
 import { userState } from "../state/user.atom";
@@ -9,13 +9,22 @@ export const Home = () => {
     const products = useRecoilValue(filteredProductsState);
     const user = useRecoilValue(userState);
     const [filter, setFilter] = useRecoilState(productFilterState);
+    const [isShow, setIsShow] = useState(false);
+
+    const handleShowSidebarMenu = () => {
+        setIsShow(true);
+    }
+
+    const handleHideSidebarMenu = () => {
+        setIsShow(false);
+    }
 
     const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFilter(e.target.value);    
     }
 
     return (
-        <div className="container relative h-screen min-w-full">
+        <div className="container relative h-screen min-w-full overflow-x-hidden">
             {/* top banner */}
             <div className="relative flex">
                 {/* banner */}
@@ -27,7 +36,7 @@ export const Home = () => {
                     </div>
 
                     {/* cart icon */}
-                    <div className="absolute top-0 right-0">
+                    <div className="absolute top-0 right-0" onClick={handleShowSidebarMenu}>
                         <div className="flex items-center gap-5 p-5 cursor-pointer">
                             <span className="text-white">Welcome <i>{user.name}</i></span>
                             <IoCartOutline size={30} className="font-black text-sky-500" />
@@ -35,7 +44,7 @@ export const Home = () => {
                     </div>
 
                     {/* hamburger menu */}
-                    <div className="absolute top-0 right-0 z-20 flex h-screen w-80 bg-white/90">
+                    <div className={`absolute top-0 right-0 z-20 flex h-screen w-80 bg-white/90 transition ${isShow ? 'translte-x-0' : 'translate-x-full'}`}>
                         <div className="flex flex-col w-full gap-4 py-4 px-7">
                             <h1 className="text-3xl">Cart</h1>
 
@@ -85,8 +94,7 @@ export const Home = () => {
             </div>
 
             {/* overlay */}
-            <div className="absolute top-0 left-0 z-10 w-full h-full bg-black/30">
-
+            <div className={`absolute top-0 left-0 w-full h-full bg-black/30 ${isShow ? 'z-10 block' : '-z-10 hidden'}`} onClick={handleHideSidebarMenu}>
             </div>
 
             {/* products */}
