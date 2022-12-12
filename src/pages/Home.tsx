@@ -1,7 +1,11 @@
-import React from "react"
+import React from "react";
+import { useRecoilValue } from "recoil";
+import { filteredProductsState } from "../state/product.atom";
 import { IoCartOutline } from "react-icons/io5";
 
 export const Home = () => {
+    const products = useRecoilValue(filteredProductsState);
+
     return (
         <div className="container h-screen min-w-full">
             {/* top banner */}
@@ -40,22 +44,26 @@ export const Home = () => {
 
                 {/* product list */}
                 <div className="grid w-full sm:grid-cols-2 lg:grid-cols-4 sm:gap-3 lg:gap-7">
-                    {/* item */}
-                    <div className="flex flex-col gap-2">
-                        {/* item image */}
-                        <img src="/images/product1.jpeg" className="h-[150px] object-cover" alt="product1" />
+                    {products.map((product, index) => (
+                        <div className="flex flex-col gap-2" key={index}>
+                            {/* item image */}
+                            <img src={`/images/${product.image}`} className="h-[150px] object-cover" alt={product.name} />
 
-                        {/* item info */}
-                        <div className="flex flex-col gap-2">
-                            <h1 className="text-xl font-semibold">Product1</h1>
-                            <div className="flex items-center justify-between">
-                                <span>$19.99</span>
-                                <button className="px-6 py-2.5 bg-sky-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-sky-700 hover:shadow-lg focus:bg-sky-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-sky-800 active:shadow-lg transition duration-150 ease-in-out flex items-center">
-                                    Add to Cart
-                                </button>
+                            {/* item info */}
+                            <div className="flex flex-col gap-2">
+                                <div className="flex items-center justify-between">
+                                    <h1 className="text-xl font-semibold">{product.name}</h1>
+                                    <span className="text-sm">{product.quantity}</span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span>${product.price}</span>
+                                    <button className="px-6 py-2.5 bg-sky-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-sky-700 hover:shadow-lg focus:bg-sky-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-sky-800 active:shadow-lg transition duration-150 ease-in-out flex items-center">
+                                        Add to Cart
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    ))}
                 </div>
             </div>
         </div>
