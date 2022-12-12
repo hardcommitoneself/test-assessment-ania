@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { filteredProductsState, productFilterState, productsState } from "../state/product.atom";
 import { userState, cartState } from "../state/user.atom";
@@ -13,6 +14,7 @@ export const Home = () => {
     const [isShow, setIsShow] = useState(false);
     const filteredProducts = useRecoilValue(filteredProductsState);
     const { total } = useRecoilValue(cartState);
+    const navigate = useNavigate();
 
     const handleShowSidebarMenu = () => {
         setIsShow(true);
@@ -75,6 +77,10 @@ export const Home = () => {
         }
     }
 
+    const gotoCheckout = () => {
+        navigate('/checkout');
+    }
+
     const handleRemoveFromCart = (product_id: number) => {
         const cartProduct = user.cart.find((product) => product.id === product_id);
         const product = allProducts.find((product) => product.id === product_id);
@@ -126,7 +132,7 @@ export const Home = () => {
                     {/* cart icon */}
                     <div className="absolute top-0 right-0" onClick={handleShowSidebarMenu}>
                         <div className="flex items-center gap-5 p-5 cursor-pointer">
-                            <span className="text-white">Welcome <i>{user.name}</i></span>
+                            <span className="text-white">Welcome <i className="font-bold">{user.name}</i></span>
                             <IoCartOutline size={30} className="font-black text-sky-500" />
                         </div>
                     </div>
@@ -172,7 +178,7 @@ export const Home = () => {
                             {/* action */}
                             <div className="flex flex-col gap-2 mt-10">
                                 <span className="text-sm">Total: ${total.toFixed(2)}</span>
-                                <button className="px-6 py-2.5 w-fit bg-sky-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-sky-700 hover:shadow-lg focus:bg-sky-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-sky-800 active:shadow-lg transition duration-150 ease-in-out flex items-center">
+                                <button onClick={gotoCheckout} className="px-6 py-2.5 w-fit bg-sky-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-sky-700 hover:shadow-lg focus:bg-sky-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-sky-800 active:shadow-lg transition duration-150 ease-in-out flex items-center">
                                     Check Out
                                 </button>
                             </div>

@@ -8,6 +8,7 @@ import {
 
 // pages
 import { Home } from './pages/Home';
+import { Checkout } from './pages/Checkout';
 import { Error } from './pages/Error';
 import reportWebVitals from './reportWebVitals';
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Home />,
     errorElement: <Error />
+  },
+  {
+    path: '/checkout',
+    element: <Checkout />
   }
 ]);
 
